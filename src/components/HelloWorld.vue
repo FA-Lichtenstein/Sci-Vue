@@ -27,9 +27,9 @@ export default {
     const date = new Date()
     const year = date.getFullYear()
 
-    for(var i = 0; i<=10; i++){
+    for(var i = 0; i<=100; i++){
       chart_data.value.push(
-        {x: (i/10), y: Math.pow((i/10),2).toFixed(4) }
+        {x: (i/100), y: Math.pow((i/100),2).toFixed(4) }
       )
     }
     return {chart_data, Chart, year}
