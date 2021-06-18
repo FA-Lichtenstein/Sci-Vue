@@ -1,57 +1,97 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <p>Here is a pretty looking integral for you:</p>
+    <div>\[ \int^{1}_{0} x^2 \textrm{d}x = \frac{1}{3}. \]</div>
+    <p>And here is a tidy graph of the same integral for you:</p>
+    <div class="chart_container">
+      <canvas id="myChart"></canvas>
+    </div>
+    <p>Hope you like!</p>
+    <p>Copyright &copy; {{year}} F.A. Lichtenstein</p>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
   name: 'HelloWorld',
+  my_chart: '',
   props: {
     msg: String
+  },
+  setup(){
+    const chart_data = ref([])
+    const Chart = window.Chart
+    const date = new Date()
+    const year = date.getFullYear()
+
+    for(var i = 0; i<=10; i++){
+      chart_data.value.push(
+        {x: (i/10), y: Math.pow((i/10),2).toFixed(4) }
+      )
+    }
+    return {chart_data, Chart, year}
+  },
+  mounted(){
+    if(typeof(window.renderMathInElement)==='function'){
+        window.renderMathInElement(document.body)
+      }
+    var ctx = document.getElementById('myChart').getContext('2d');
+    this.my_chart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            data: this.chart_data,
+            backgroundColor: 'rgba(44, 62, 80, 0.25)',
+            borderColor: 'rgba(44, 62, 80, 0.5)',
+            showLine: true,
+            fill: true,
+            pointRadius: 0,
+            pointHoverRadius: 0,
+            tension: 0.5
+          }],
+          
+        },
+        options: {
+          plugins: {
+              legend: {
+                display: false
+            },
+            title: {
+              display: true,
+              text: 'Definite integral of x^2 from 0 to 1'
+            }
+          },
+          scales: {
+            x: {
+              title: {
+                display:true,
+                text:'x'
+              },
+              type: 'linear',
+              position: 'bottom'
+            },
+            y: {
+              title: {
+                display:true,
+                text:'x^2'
+              },
+            }
+          },
+          responsive: true
+        }
+    })
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+<style>
+.chart_container{
+  display: inline-flex;
+  position: relative;
+  width:95vw;
+  max-width: 600px;
 }
 </style>
