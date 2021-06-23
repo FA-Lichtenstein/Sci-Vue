@@ -1,4 +1,4 @@
-# hello-sci
+# Sci-Vue Template
 This is a starter template for interactive vue javascript science articles.
 
 The template includes Vue 3, ES Lint, Charts.js and Katex. 
