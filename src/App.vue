@@ -21,8 +21,7 @@ export default {
   text-align: center;
   color: rgba(44, 62, 80, 0.9);
   background: rgba(44, 62, 80, 0.05);
-  margin: 0px 0px 0px 0px;
-  padding-top: 48px;
+  padding: 1px;
   min-height: 100vh;
 }
 </style>
